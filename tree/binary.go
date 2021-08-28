@@ -1,10 +1,5 @@
 package tree
 
-// BinaryTree represents an implementation of a binary tree.
-type BinaryTree struct {
-	Root *Node
-}
-
 // Add adds a new node onto the tree using binary search tree strategy.
 func Add(root *Node, data int) {
 	if data < root.Data {
@@ -36,9 +31,15 @@ func Sum(root *Node) int {
 // Height calculates the height of a tree.
 func Height(root *Node) int {
 	if root == nil {
-		return 0
+		return -1
 	}
 
-	// return root.Data + Sum(root.Left) + Sum(root.Right)
-	return 0
+	leftHeight := Height(root.Left)
+	rightHeight := Height(root.Right)
+
+	if leftHeight > rightHeight {
+		return leftHeight + 1
+	}
+	return rightHeight + 1
+
 }
