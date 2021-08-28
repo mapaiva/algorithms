@@ -1,5 +1,7 @@
 package tree
 
+import "fmt"
+
 // Add adds a new node onto the tree using binary search tree strategy.
 func Add(root *Node, data int) {
 	if data < root.Data {
@@ -42,4 +44,15 @@ func Height(root *Node) int {
 	}
 	return rightHeight + 1
 
+}
+
+// PrintInOrder prints the tree in order: Left, Root, Right.
+func PrintInOrder(root *Node) {
+	if root.Left != nil {
+		PrintInOrder(root.Left)
+	}
+	fmt.Printf(" %d ", root.Data)
+	if root.Right != nil {
+		PrintInOrder(root.Right)
+	}
 }
