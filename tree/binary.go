@@ -49,7 +49,12 @@ func Height(root *Node) int {
 
 }
 
-// PrintInOrder prints the tree in order: Left, Root, Right.
+// TraversalInOrder returns an int array with the result of a in-order traversal over the tree.
+func TraversalInOrder(root *Node) []int {
+	panic("TODO")
+}
+
+// PrintInOrder prints the tree in-order: Left, Root, Right.
 func PrintInOrder(root *Node) {
 	if root.Left != nil {
 		PrintInOrder(root.Left)
@@ -60,7 +65,29 @@ func PrintInOrder(root *Node) {
 	}
 }
 
-// PrintLevelOrder prints the tree in level order. Root, Left, Right.
+// PrintPreOrder prints the tree in pre-order: Root, Left, Right.
+func PrintPreOrder(root *Node) {
+	fmt.Printf(" %d ", root.Data)
+	if root.Left != nil {
+		PrintPreOrder(root.Left)
+	}
+	if root.Right != nil {
+		PrintPreOrder(root.Right)
+	}
+}
+
+// PrintPostOrder prints the tree in post-order: Left, Right, Root.
+func PrintPostOrder(root *Node) {
+	if root.Left != nil {
+		PrintPreOrder(root.Left)
+	}
+	if root.Right != nil {
+		PrintPreOrder(root.Right)
+	}
+	fmt.Printf(" %d ", root.Data)
+}
+
+// PrintLevelOrder prints the tree in level order.
 func PrintLevelOrder(root *Node) {
 	if root == nil {
 		return
