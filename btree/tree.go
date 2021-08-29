@@ -5,6 +5,71 @@ import (
 	"fmt"
 )
 
+// BinaryTree represents a binary search tree.
+type BinaryTree struct {
+	root *Node
+}
+
+// NewBinaryTree creates a new binary tree.
+func NewBinaryTree() *BinaryTree {
+	return &BinaryTree{}
+}
+
+// Sum returns the sum of all tree nodes.
+func (t *BinaryTree) Sum() int {
+	if t.root == nil {
+		return 0
+	}
+
+	stack := list.New()
+	stack.PushFront(t.root)
+
+	var sum int
+	for stack.Len() > 0 {
+		e := stack.Back()
+		stack.Remove(e)
+		node := e.Value.(*Node)
+
+		sum += node.Data
+
+		if node.Left != nil {
+			stack.PushFront(node.Left)
+		}
+		if node.Right != nil {
+			stack.PushFront(node.Right)
+		}
+	}
+	return sum
+}
+
+// Add adds a new node on the binary search tree.
+func (t *BinaryTree) Add(data int) {
+	if t.root == nil {
+		t.root = NewNode(data)
+	} else {
+		current := t.root
+		for {
+			if data < current.Data {
+				if current.Left == nil {
+					current.Left = NewNode(data)
+					break
+				} else {
+					current = current.Left
+				}
+			}
+
+			if data > current.Data {
+				if current.Right == nil {
+					current.Right = NewNode(data)
+					break
+				} else {
+					current = current.Right
+				}
+			}
+		}
+	}
+}
+
 // Add adds a new node onto the tree using binary search tree strategy.
 func Add(root *Node, data int) {
 	if data < root.Data {

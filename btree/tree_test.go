@@ -5,6 +5,21 @@ import (
 	"testing"
 )
 
+func TestBinaryTree_Sum(t *testing.T) {
+	tree := btree.NewBinaryTree()
+	tree.Add(3)
+	tree.Add(2)
+	tree.Add(5)
+	tree.Add(1)
+	tree.Add(4)
+	tree.Add(6)
+	tree.Add(7)
+
+	if tree.Sum() != 28 {
+		t.Errorf("expected %d got %d", 28, tree.Sum())
+	}
+}
+
 func TestSum(t *testing.T) {
 	root := &btree.Node{
 		Data: 2,
