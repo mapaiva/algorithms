@@ -1,6 +1,9 @@
 package tree
 
-import "fmt"
+import (
+	"container/list"
+	"fmt"
+)
 
 // Add adds a new node onto the tree using binary search tree strategy.
 func Add(root *Node, data int) {
@@ -54,5 +57,31 @@ func PrintInOrder(root *Node) {
 	fmt.Printf(" %d ", root.Data)
 	if root.Right != nil {
 		PrintInOrder(root.Right)
+	}
+}
+
+// PrintLevelOrder prints the tree in level order. Root, Left, Right.
+func PrintLevelOrder(root *Node) {
+	if root == nil {
+		return
+	}
+
+	queue := list.New()
+	queue.PushBack(root)
+
+	for queue.Len() > 0 {
+		e := queue.Front()
+		queue.Remove(e)
+		v := e.Value
+		root = v.(*Node)
+
+		fmt.Printf(" %d ", root.Data)
+
+		if root.Left != nil {
+			queue.PushBack(root.Left)
+		}
+		if root.Right != nil {
+			queue.PushBack(root.Right)
+		}
 	}
 }
