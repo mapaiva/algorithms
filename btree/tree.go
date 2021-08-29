@@ -1,4 +1,4 @@
-package tree
+package btree
 
 import (
 	"container/list"
@@ -47,11 +47,6 @@ func Height(root *Node) int {
 	}
 	return rightHeight + 1
 
-}
-
-// TraversalInOrder returns an int array with the result of a in-order traversal over the tree.
-func TraversalInOrder(root *Node) []int {
-	panic("TODO")
 }
 
 // PrintInOrder prints the tree in-order: Left, Root, Right.

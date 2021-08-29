@@ -1,15 +1,15 @@
-package tree_test
+package btree_test
 
 import (
-	"algorithms/tree"
+	"algorithms/btree"
 	"testing"
 )
 
 func BenchmarkNodeAssertion(b *testing.B) {
 	var value interface{}
-	value = tree.NewNode(42)
+	value = btree.NewNode(42)
 
 	for i := 0; i < b.N; i++ {
-		_ = value.(*tree.Node)
+		_ = value.(*btree.Node)
 	}
 }

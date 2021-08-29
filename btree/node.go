@@ -1,4 +1,4 @@
-package tree
+package btree
 
 // Node represents a binary tree node.
 type Node struct {
