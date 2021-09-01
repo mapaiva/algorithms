@@ -10,8 +10,8 @@ func (s *SortList) Add(value int) {
 }
 
 func (s *SortList) Median() float64 {
+	isEven := len(s.items)%2 == 0
 	index := len(s.items) / 2
-	isEven := index%2 == 0
 
 	if isEven {
 		return (float64(s.items[index-1]) + float64(s.items[index])) / 2
