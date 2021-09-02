@@ -60,7 +60,7 @@ func (h *MinHeap) minHeapifyDown(index int) {
 	for leftIndex <= lastIndex {
 		if leftIndex == lastIndex {
 			childToCompare = leftIndex
-		} else if h.items[leftIndex] > h.items[rightIndex] {
+		} else if h.items[leftIndex] < h.items[rightIndex] {
 			childToCompare = leftIndex
 		} else {
 			childToCompare = rightIndex
