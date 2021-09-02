@@ -37,10 +37,10 @@ func runningMedian(items []int) []float64 {
 	highers := heap.NewMaxHeap()
 
 	for _, number := range items {
-		if highers.Size() == 0 || highers.Peek() > number {
-			highers.Add(number)
+		if highers.Len() == 0 || highers.Peek() > number {
+			highers.Push(number)
 		} else {
-			lowers.Add(number)
+			lowers.Push(number)
 		}
 
 		rebalance(lowers, highers)
@@ -51,17 +51,17 @@ func runningMedian(items []int) []float64 {
 }
 
 func rebalance(lowers heap.Heap, highers heap.Heap) {
-	if highers.Size() > lowers.Size()+1 {
-		lowers.Add(highers.Extract())
-	} else if lowers.Size() > highers.Size()+1 {
-		highers.Add(lowers.Extract())
+	if highers.Len() > lowers.Len()+1 {
+		lowers.Push(highers.Pop())
+	} else if lowers.Len() > highers.Len()+1 {
+		highers.Push(lowers.Pop())
 	}
 }
 
 func median(lowers heap.Heap, highers heap.Heap) float64 {
 	var bigger, smaller heap.Heap
 
-	if lowers.Size() > highers.Size() {
+	if lowers.Len() > highers.Len() {
 		bigger = lowers
 		smaller = highers
 	} else {
@@ -69,7 +69,7 @@ func median(lowers heap.Heap, highers heap.Heap) float64 {
 		smaller = lowers
 	}
 
-	if bigger.Size() == smaller.Size() {
+	if bigger.Len() == smaller.Len() {
 		return (float64(bigger.Peek()) + float64(smaller.Peek())) / 2
 	}
 

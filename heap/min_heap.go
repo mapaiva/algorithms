@@ -10,20 +10,20 @@ func NewMinHeap() *MinHeap {
 	return &MinHeap{}
 }
 
-// Add adds a new element to the heap.
-func (h *MinHeap) Add(value int) {
+// Push adds a new element to the heap.
+func (h *MinHeap) Push(value int) {
 	h.items = append(h.items, value)
 	h.minHeapifyUp(len(h.items) - 1)
 }
 
-// Extract returns the top key, and removes it from the heap.
-func (h *MinHeap) Extract() int {
+// Pop returns the top key, and removes it from the heap.
+func (h *MinHeap) Pop() int {
 	if len(h.items) == 0 {
 		panic("empty heap")
 	}
 
 	extracted := h.items[0]
-	l := h.Size() - 1
+	l := h.Len() - 1
 	h.items[0] = h.items[l]
 	h.items = h.items[:l]
 
@@ -40,8 +40,8 @@ func (h *MinHeap) Peek() int {
 	return h.items[0]
 }
 
-// Size returns the size of the heap.
-func (h *MinHeap) Size() int {
+// Len returns the size of the heap.
+func (h *MinHeap) Len() int {
 	return len(h.items)
 }
 
@@ -53,7 +53,7 @@ func (h *MinHeap) minHeapifyUp(index int) {
 }
 
 func (h *MinHeap) minHeapifyDown(index int) {
-	lastIndex := h.Size() - 1
+	lastIndex := h.Len() - 1
 	leftIndex, rightIndex := left(index), right(index)
 	childToCompare := 0
 

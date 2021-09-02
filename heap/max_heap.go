@@ -10,20 +10,20 @@ func NewMaxHeap() *MaxHeap {
 	return &MaxHeap{}
 }
 
-// Add adds a new element to the heap.
-func (h *MaxHeap) Add(value int) {
+// Push adds a new element to the heap.
+func (h *MaxHeap) Push(value int) {
 	h.items = append(h.items, value)
 	h.maxHeapifyUp(len(h.items) - 1)
 }
 
-// Extract returns the top key, and removes it from the heap.
-func (h *MaxHeap) Extract() int {
+// Pop returns the top key, and removes it from the heap.
+func (h *MaxHeap) Pop() int {
 	if len(h.items) == 0 {
 		panic("empty heap")
 	}
 
 	extracted := h.items[0]
-	l := h.Size() - 1
+	l := h.Len() - 1
 	h.items[0] = h.items[l]
 	h.items = h.items[:l]
 
@@ -40,8 +40,8 @@ func (h *MaxHeap) Peek() int {
 	return h.items[0]
 }
 
-// Size returns the size of the heap.
-func (h *MaxHeap) Size() int {
+// Len returns the size of the heap.
+func (h *MaxHeap) Len() int {
 	return len(h.items)
 }
 
@@ -53,7 +53,7 @@ func (h *MaxHeap) maxHeapifyUp(index int) {
 }
 
 func (h *MaxHeap) maxHeapifyDown(index int) {
-	lastIndex := h.Size() - 1
+	lastIndex := h.Len() - 1
 	leftIndex, rightIndex := left(index), right(index)
 	childToCompare := 0
 
@@ -74,18 +74,6 @@ func (h *MaxHeap) maxHeapifyDown(index int) {
 			return
 		}
 	}
-}
-
-func parent(index int) int {
-	return (index - 1) / 2
-}
-
-func left(parentIndex int) int {
-	return parentIndex*2 + 1
-}
-
-func right(parentIndex int) int {
-	return parentIndex*2 + 2
 }
 
 func (h *MaxHeap) swap(index1, index2 int) {
