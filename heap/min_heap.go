@@ -22,13 +22,12 @@ func (h *MinHeap) Pop() int {
 		panic("empty heap")
 	}
 
-	extracted := h.items[0]
-	l := h.Len() - 1
-	h.items[0] = h.items[l]
-	h.items = h.items[:l]
-
+	n := h.Len() - 1
+	h.swap(0, n)
 	h.minHeapifyDown(0)
 
+	extracted := h.items[n]
+	h.items = h.items[:n]
 	return extracted
 }
 
@@ -53,26 +52,22 @@ func (h *MinHeap) minHeapifyUp(index int) {
 }
 
 func (h *MinHeap) minHeapifyDown(index int) {
-	lastIndex := h.Len() - 1
-	leftIndex, rightIndex := left(index), right(index)
-	childToCompare := 0
+	last := h.Len() - 1
 
-	for leftIndex <= lastIndex {
-		if leftIndex == lastIndex {
-			childToCompare = leftIndex
-		} else if h.items[leftIndex] < h.items[rightIndex] {
-			childToCompare = leftIndex
-		} else {
-			childToCompare = rightIndex
+	for {
+		l, r := left(index), right(index)
+		if l >= last || l < 0 { // l < 0 after int overflow
+			break
 		}
-
-		if h.items[index] > h.items[childToCompare] {
-			h.swap(index, childToCompare)
-			index = childToCompare
-			leftIndex, rightIndex = left(index), right(index)
-		} else {
-			return
+		childToCompare := l
+		if r < last && h.items[r] < h.items[l] {
+			childToCompare = r
 		}
+		if h.items[childToCompare] > h.items[index] {
+			break
+		}
+		h.swap(childToCompare, index)
+		index = childToCompare
 	}
 }
 
