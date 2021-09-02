@@ -1,77 +1,111 @@
 package main
 
 import (
-	"algorithms/heap"
+	"container/heap"
 	"fmt"
 )
 
-func main() {
-	items := []int{
-		94455,
-		20555,
-		20535,
-		53125,
-		73634,
-		148,
-		63772,
-		17738,
-		62995,
-		13401,
-		95912,
-		13449,
-		92211,
-		17073,
-		69230,
-		22016,
-		22120,
-		78563,
-		16571,
-	}
+type MinHeap []int
 
-	fmt.Println(runningMedian(items))
+// Len is the number of elements in the collection.
+func (h MinHeap) Len() int { return len(h) }
+
+// Less reports whether the element with
+// index i should sort before the element with index j.
+func (h MinHeap) Less(i int, j int) bool { return h[i] < h[j] }
+
+// Swap swaps the elements with indexes i and j.
+func (h MinHeap) Swap(i int, j int) { h[i], h[j] = h[j], h[i] }
+
+func (h *MinHeap) Push(x interface{}) {
+	*h = append(*h, x.(int))
+}
+
+func (h *MinHeap) Pop() interface{} {
+	old := *h
+	oldLen := len(old)
+	len := oldLen - 1
+	extracted := old[len]
+	*h = old[0:len]
+	return extracted
+}
+
+func (h MinHeap) Peek() int {
+	return h[0]
+}
+
+type MaxHeap []int
+
+// Len is the number of elements in the collection.
+func (h MaxHeap) Len() int {
+	return len(h)
+}
+
+// Less reports whether the element with
+// index i should sort before the element with index j.
+func (h MaxHeap) Less(i int, j int) bool {
+	return h[i] > h[j]
+}
+
+// Swap swaps the elements with indexes i and j.
+func (h MaxHeap) Swap(i int, j int) {
+	h[i], h[j] = h[j], h[i]
+}
+
+func (h *MaxHeap) Push(x interface{}) {
+	*h = append(*h, x.(int))
+}
+
+func (h *MaxHeap) Pop() interface{} {
+	old := *h
+	len := len(*h) - 1
+	extracted := old[len]
+	*h = old[0:len]
+	return extracted
+}
+
+func (h MaxHeap) Peek() int {
+	return h[0]
+}
+
+func main() {
+	fmt.Println("Run go test -v ./cmd/heap")
 }
 
 func runningMedian(items []int) []float64 {
-	var medians []float64
-	lowers := heap.NewMinHeap()
-	highers := heap.NewMaxHeap()
+	highers := &MaxHeap{}
+	lowers := &MinHeap{}
 
+	var medians []float64
 	for _, number := range items {
 		if highers.Len() == 0 || highers.Peek() > number {
-			highers.Push(number)
+			heap.Push(highers, number)
 		} else {
-			lowers.Push(number)
+			heap.Push(lowers, number)
 		}
 
-		rebalance(lowers, highers)
-		medians = append(medians, median(lowers, highers))
+		rebalance(highers, lowers)
+		medians = append(medians, median(highers, lowers))
 	}
 
 	return medians
 }
 
-func rebalance(lowers heap.Heap, highers heap.Heap) {
+func rebalance(highers *MaxHeap, lowers *MinHeap) {
 	if highers.Len() > lowers.Len()+1 {
-		lowers.Push(highers.Pop())
+		heap.Push(lowers, heap.Pop(highers))
 	} else if lowers.Len() > highers.Len()+1 {
-		highers.Push(lowers.Pop())
+		heap.Push(highers, heap.Pop(lowers))
 	}
 }
 
-func median(lowers heap.Heap, highers heap.Heap) float64 {
-	var bigger, smaller heap.Heap
-
+func median(highers *MaxHeap, lowers *MinHeap) float64 {
+	if highers.Len() > lowers.Len() {
+		return float64(highers.Peek())
+	}
 	if lowers.Len() > highers.Len() {
-		bigger = lowers
-		smaller = highers
-	} else {
-		bigger = highers
-		smaller = lowers
+		return float64(lowers.Peek())
 	}
 
-	if bigger.Len() == smaller.Len() {
-		return (float64(bigger.Peek()) + float64(smaller.Peek())) / 2
-	}
-
-	return float64(bigger.Peek())
+	return (float64(highers.Peek()) + float64(lowers.Peek())) / 2
 }
