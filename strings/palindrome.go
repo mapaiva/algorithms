@@ -17,12 +17,12 @@ func IsPalindrome(str string) bool {
 func PalindromeIndex(s string) int {
 	last := len(s) - 1
 
-	for i := 0; i < len(s)/2; i++ { // O(log(n))
+	for i := 0; i < len(s)/2; i++ { // O(n)
 		tail := last - i
 		if rune(s[tail]) != rune(s[i]) {
-			if IsPalindrome(s[i:tail]) { // O(log(n))
+			if IsPalindrome(s[i:tail]) { // O(n)
 				return tail
-			} else if IsPalindrome(s[i+1 : tail+1]) { // O(log(n))
+			} else if IsPalindrome(s[i+1 : tail+1]) { // O(n)
 				return i
 			} else {
 				return -1
@@ -32,6 +32,7 @@ func PalindromeIndex(s string) int {
 
 	return -1
 }
+
 func PalindromeIndexLinear(s string) int {
 	l := len(s)
 	i := 0
@@ -53,6 +54,10 @@ func PalindromeIndexLinear(s string) int {
 	a := i + 1
 	b := j
 
+	if a == b {
+		return a
+	}
+
 	for a < j && b > (i+1) {
 		if s[a] != s[b] {
 			return j
@@ -62,5 +67,5 @@ func PalindromeIndexLinear(s string) int {
 		b -= 1
 	}
 
-	return i + 1
+	return i
 }
