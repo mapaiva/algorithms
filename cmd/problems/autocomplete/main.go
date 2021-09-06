@@ -13,7 +13,7 @@ type Trie struct {
 	Root *Node
 }
 
-func (t *Trie) Add(word string) {
+func (t *Trie) Put(word string) {
 	current := t.Root
 	for _, char := range word {
 		if current.Children[char] == nil {
@@ -69,9 +69,9 @@ func (n *Node) findSuffixes(suffix string, results *[]string) {
 		keys = append(keys, int(char))
 	}
 
-	sort.Ints(keys) // O(n*logn)
+	sort.Ints(keys) // O(n*logn) sort performs a quicksort
 
-	for _, key := range keys {
+	for _, key := range keys { // O(n)
 		char := rune(key)
 		child := n.Children[char]
 		w := suffix + string(char)
@@ -84,14 +84,14 @@ func (n *Node) findSuffixes(suffix string, results *[]string) {
 			break
 		}
 
-		child.findSuffixes(w, results)
+		child.findSuffixes(w, results) // O(n)
 	}
 }
 
-func suggestions(repository []string, customerQuery string) [][]string {
+func autocomplete(repository []string, customerQuery string) [][]string {
 	trie := &Trie{Root: &Node{Children: make(map[rune]*Node)}}
 	for _, word := range repository { // O(r) onde r = len(repository)
-		trie.Add(word) // O(w) onde w = len(word)
+		trie.Put(word) // O(w) onde w = len(word)
 	}
 
 	var results [][]string
@@ -111,7 +111,6 @@ func main() {
 		// "moneypot",
 		// "monitor",
 		// "mousepad",
-
 		"code",
 		"codePhone",
 		"coddle",
@@ -122,7 +121,7 @@ func main() {
 	// customerQuery := "mouse"
 	customerQuery := "code"
 
-	for _, result := range suggestions(repository, customerQuery) {
+	for _, result := range autocomplete(repository, customerQuery) {
 		fmt.Println(result)
 	}
 }
